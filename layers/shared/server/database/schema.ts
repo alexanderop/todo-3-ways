@@ -5,4 +5,5 @@ export const todos = sqliteTable('todos', {
   title: text().notNull(),
   completed: integer().notNull().$defaultFn(() => 0),
   createdAt: integer({ mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
+  updatedAt: integer({ mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
 })

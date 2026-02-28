@@ -84,13 +84,13 @@ await store.todos.delete(id)
 
 **Pattern:** CRDT-based offline-first sync with Y.Doc, WebSocket provider, and IndexedDB persistence.
 
-- **Client Plugin:** `plugins/yjs.client.ts` — initializes `Y.Doc`, `IndexeddbPersistence`, `WebsocketProvider`. Provides `$yDoc`, `$yIdb`, `$yWs`.
+- **Client Plugin:** `plugins/yjs.client.ts` — initializes `Y.Doc`, `IndexeddbPersistence`, `WebsocketProvider`. Provides `$yDoc`, `$yIdb`, `$yWs`. Includes HMR guard via `globalThis` to prevent duplicate instances during dev hot reload.
+- **Server Route:** `server/routes/_yjs/[room].ts` — Nitro WebSocket handler using `y-crossws`. The `[room]` dynamic segment isolates Y.Doc instances by room name. Starts automatically with the dev server.
 - **Composable:** `composables/useY.ts` — generic bridge from Yjs types to Vue `shallowRef` reactivity via `observeDeep` with deep equality check
 - **Composable:** `composables/useYjsTodos.ts` — todo-specific API. Data stored as `Y.Map<Y.Map<unknown>>`. IDs are `crypto.randomUUID()` strings. Mutations wrapped in `doc.transact()`.
-- **Server Callback:** `server/api/yjs-callback.post.ts` — receives Yjs binary updates and syncs into SQLite via Drizzle (upsert by title)
 - **Page:** `pages/yjs.vue` — shows online/synced status indicators
 
-Yjs is the source of truth — SQLite is a secondary persistence layer here.
+Yjs is the source of truth — IndexedDB provides offline persistence, and WebSocket sync (via `y-crossws`) enables real-time collaboration across tabs/clients.
 IDs are string UUIDs (not auto-increment integers like the other approaches).
 
 ## Conventions

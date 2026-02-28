@@ -21,6 +21,17 @@ interface Todo {
 }
 
 export function useYjsTodos() {
+  if (import.meta.server) {
+    return {
+      todos: computed<Todo[]>(() => []),
+      isSynced: ref(false),
+      isOnline: ref(false),
+      addTodo: (_title: string) => {},
+      toggleTodo: (_id: string) => {},
+      deleteTodo: (_id: string) => {},
+    }
+  }
+
   const { $yDoc: doc, $yWs: ws, $yIdb: idb } = useNuxtApp()
 
   const todosMap = doc.getMap<Y.Map<unknown>>('todos')

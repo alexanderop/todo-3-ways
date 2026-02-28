@@ -39,5 +39,7 @@ const approaches = [
         </span>
       </NuxtLink>
     </div>
+
+    <FeatureMatrix />
   </div>
 </template>

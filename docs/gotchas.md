@@ -3,7 +3,7 @@
 ## Drizzle + better-sqlite3
 
 - `completed` is stored as `INTEGER` (0/1), not a boolean. All layers compare against `0`/`1`, not `true`/`false`.
-- `createdAt` uses `integer({ mode: 'timestamp' })` with `$defaultFn(() => new Date())` — Drizzle handles the Date-to-integer conversion.
+- `createdAt` and `updatedAt` use `integer({ mode: 'timestamp' })` with `$defaultFn(() => new Date())` — Drizzle handles the Date-to-integer conversion. The `updatedAt` column is required by `@rstore/offline`'s auto-generated `syncCollection` hook, which uses `gte("updatedAt", lastUpdatedAt)` for incremental sync.
 - The DB file (`./db.sqlite`) is gitignored and created on first run. If it's missing, the app creates it automatically.
 
 ## Layer Order in nuxt.config.ts
@@ -14,7 +14,7 @@ The `extends` array order in the root `nuxt.config.ts` matters for module resolu
 
 The Yjs plugin uses the `.client.ts` suffix (`plugins/yjs.client.ts`) because `Y.Doc`, `y-websocket`, and `y-indexeddb` are browser-only APIs. Accessing `$yDoc`/`$yWs`/`$yIdb` in SSR context will fail.
 
-The Yjs layer requires a separate WebSocket server running at `ws://localhost:1234` (hardcoded in the plugin). Without it, the Yjs approach works offline-only via IndexedDB.
+The Yjs WebSocket sync uses Nitro's built-in WebSocket support via `y-crossws`. The server route at `/_yjs/todo-yjs` starts automatically with `pnpm dev` — no separate process needed. The plugin derives the WebSocket URL from `window.location`, so it works in both dev and production.
 
 ## Yjs Uses String UUIDs
 
@@ -23,6 +23,21 @@ Unlike the other three approaches (which use SQLite auto-increment integer IDs),
 ## rstore Server Hooks
 
 The rstore `allowTables()` call lives in a Nitro server plugin (`server/plugins/rstore-hooks.ts`), not a Nuxt plugin. It must whitelist tables before the rstore module's auto-generated API can serve them. Missing this file causes silent 404s on rstore queries.
+
+### Integer Timestamps Need Date Coercion
+
+When using `integer({ mode: 'timestamp' })` columns, Drizzle's driver calls `.getTime()` on values during insert. If the client sends raw unix integers (common in offline mode to avoid Date proxy issues), the server hook must coerce them to `Date` objects:
+
+```ts
+rstoreDrizzleHooks.hook('index.post.before', ({ body }) => {
+  if (typeof body.createdAt === 'number')
+    body.createdAt = new Date(body.createdAt * 1000)
+  if (typeof body.updatedAt === 'number')
+    body.updatedAt = new Date(body.updatedAt * 1000)
+})
+```
+
+Without this, you'll see `value.getTime is not a function` errors on POST requests.
 
 ## UnoCSS Shortcuts
 

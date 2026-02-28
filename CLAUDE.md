@@ -36,6 +36,12 @@ eslint.config.js      # @antfu/eslint-config + oxlint
 drizzle.config.ts     # Points to shared layer schema
 ```
 
+## Conventions
+
+- **No auto-import.** `imports.autoImport` is `false` in `nuxt.config.ts`.
+  Always use explicit imports (`from '#imports'` or `'#app'`) for composables and Nuxt utilities.
+  Component auto-scanning is still enabled.
+
 ## Further Reading
 
 **IMPORTANT:** Before starting any task, identify which docs below

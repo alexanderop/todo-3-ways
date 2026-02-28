@@ -1,5 +1,17 @@
 <script setup lang="ts">
+import { useOfflineSimulation, useTabSync } from '#imports'
+import { useMutation, useQuery, useQueryCache } from '@pinia/colada'
+
 const queryCache = useQueryCache()
+const { isOffline, toggleOffline } = useOfflineSimulation()
+const { tabCount, lastRemoteEvent, broadcastMutation } = useTabSync('colada')
+
+const capabilities = [
+  { label: 'Offline', supported: false },
+  { label: 'Multi-tab sync', supported: false },
+  { label: 'Conflict-free', supported: false },
+  { label: 'Real-time', supported: false },
+]
 
 const { data: todos, isPending, error } = useQuery({
   key: ['todos'],
@@ -11,6 +23,7 @@ const { mutate: addTodo } = useMutation({
     $fetch('/api/todos', { method: 'POST', body: { title } }),
   onSettled() {
     queryCache.invalidateQueries({ key: ['todos'] })
+    broadcastMutation('Todo added in another tab')
   },
 })
 
@@ -22,6 +35,7 @@ const { mutate: toggleTodo } = useMutation({
     }),
   onSettled() {
     queryCache.invalidateQueries({ key: ['todos'] })
+    broadcastMutation('Todo toggled in another tab')
   },
 })
 
@@ -30,6 +44,7 @@ const { mutate: deleteTodo } = useMutation({
     $fetch(`/api/todos/${id}`, { method: 'DELETE' }),
   onSettled() {
     queryCache.invalidateQueries({ key: ['todos'] })
+    broadcastMutation('Todo deleted in another tab')
   },
 })
 </script>
@@ -44,5 +59,15 @@ const { mutate: deleteTodo } = useMutation({
     @add="addTodo"
     @toggle="(id) => toggleTodo({ id: id as number, completed: todos?.find(t => t.id === id)?.completed ?? 0 })"
     @delete="(id) => deleteTodo(id as number)"
-  />
+  >
+    <template #toolbar>
+      <DemoToolbar
+        :capabilities="capabilities"
+        :is-offline="isOffline"
+        :tab-count="tabCount"
+        :last-remote-event="lastRemoteEvent"
+        @toggle-offline="toggleOffline"
+      />
+    </template>
+  </TodoPage>
 </template>

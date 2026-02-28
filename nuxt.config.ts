@@ -44,6 +44,9 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-08-14',
 
   nitro: {
+    experimental: {
+      websocket: true,
+    },
     esbuild: {
       options: {
         target: 'esnext',

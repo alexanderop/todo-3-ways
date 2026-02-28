@@ -35,6 +35,8 @@ function handleAdd() {
       <slot name="subtitle-extra" />
     </p>
 
+    <slot name="toolbar" />
+
     <div class="todo-card">
       <form class="flex gap-2" @submit.prevent="handleAdd">
         <input v-model="newTodo" class="add-input" placeholder="What needs to be done?">

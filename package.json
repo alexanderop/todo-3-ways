@@ -19,6 +19,7 @@
     "@pinia/colada": "catalog:frontend",
     "better-sqlite3": "catalog:frontend",
     "drizzle-orm": "catalog:frontend",
+    "y-crossws": "catalog:frontend",
     "y-indexeddb": "catalog:frontend",
     "y-websocket": "catalog:frontend",
     "yjs": "catalog:frontend"

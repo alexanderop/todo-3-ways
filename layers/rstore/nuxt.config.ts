@@ -10,5 +10,6 @@ export default defineNuxtConfig({
       name: 'useDrizzle',
       from: '~~/layers/shared/server/utils/drizzle',
     },
+    offline: true,
   },
 })

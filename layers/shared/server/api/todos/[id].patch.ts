@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event)
   const db = useDrizzle()
   return db.update(todos)
-    .set({ completed: body.completed })
+    .set({ completed: body.completed, updatedAt: new Date() })
     .where(eq(todos.id, id))
     .returning()
     .get()

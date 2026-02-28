@@ -83,6 +83,27 @@ export default defineConfig({
       'todo-status-error': 'text-accent',
     },
 
+    // Demo toolbar
+    {
+      'demo-toolbar': 'mt-6 flex flex-wrap items-center justify-between gap-3 rounded-xl bg-fill/60 border border-border/15 px-4 py-3',
+      'cap-badge': 'font-mono text-[0.6875rem] tracking-[0.04em] px-2 py-0.5 rounded-full border',
+      'cap-badge-yes': 'border-green-400/30 text-green-400/80 bg-green-400/8',
+      'cap-badge-no': 'border-text-base/10 text-text-base/20 bg-text-base/3',
+      'offline-toggle': 'font-mono text-[0.75rem] tracking-[0.04em] flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border/25 bg-card/60 text-text-base/60 cursor-pointer transition-all duration-200 hover:(border-accent/40 text-text-base/80)',
+      'offline-toggle-active': 'border-red-400/40! text-red-400/90! bg-red-400/8!',
+      'offline-dot': 'inline-block w-2 h-2 rounded-full transition-colors duration-200',
+      'tab-indicator': 'font-mono text-[0.75rem] text-text-base/35',
+      'remote-notif': 'w-full font-mono text-[0.75rem] text-accent/70 mt-1',
+    },
+
+    // Feature matrix
+    {
+      'matrix-table': 'w-full border-collapse text-[0.875rem]',
+      'matrix-th': 'font-mono text-[0.6875rem] tracking-[0.06em] uppercase text-text-base/35 px-4 py-3 bg-card/80 border-b border-border/15',
+      'matrix-row': 'transition-colors duration-150 hover:bg-card/40',
+      'matrix-td': 'px-4 py-2.5 border-b border-border/10',
+    },
+
     // Dynamic class shortcuts (yjs sync dot)
     {
       online: 'bg-green-400!',
