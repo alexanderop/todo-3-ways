@@ -3,7 +3,7 @@
     <header class="app-header">
       <div class="header-inner">
         <NuxtLink to="/" class="brand">
-          Todo 5 Ways
+          Todo 6 Ways
         </NuxtLink>
         <nav class="app-nav">
           <NuxtLink to="/pinia" class="nav-link" active-class="nav-link-active">
@@ -20,6 +20,9 @@
           </NuxtLink>
           <NuxtLink to="/tanstack-db" class="nav-link" active-class="nav-link-active">
             TanStack DB
+          </NuxtLink>
+          <NuxtLink to="/livestore" class="nav-link" active-class="nav-link-active">
+            LiveStore
           </NuxtLink>
         </nav>
       </div>

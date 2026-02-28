@@ -7,6 +7,7 @@ const features = [
     rstore: true,
     yjs: true,
     tanstackDb: false,
+    livestore: true,
   },
   {
     label: 'Multi-tab sync',
@@ -15,6 +16,7 @@ const features = [
     rstore: false,
     yjs: true,
     tanstackDb: false,
+    livestore: true,
   },
   {
     label: 'Conflict resolution',
@@ -24,6 +26,8 @@ const features = [
     yjs: true,
     yjsNote: 'CRDT',
     tanstackDb: false,
+    livestore: true,
+    livestoreNote: 'rebasing',
   },
   {
     label: 'Real-time updates',
@@ -32,6 +36,7 @@ const features = [
     rstore: false,
     yjs: true,
     tanstackDb: false,
+    livestore: false,
   },
   {
     label: 'Auto-generated API',
@@ -40,6 +45,7 @@ const features = [
     rstore: true,
     yjs: false,
     tanstackDb: false,
+    livestore: false,
   },
   {
     label: 'Caching',
@@ -49,6 +55,8 @@ const features = [
     yjs: true,
     yjsNote: 'local',
     tanstackDb: true,
+    livestore: true,
+    livestoreNote: 'SQLite',
   },
   {
     label: 'Optimistic updates',
@@ -57,11 +65,12 @@ const features = [
     rstore: true,
     yjs: true,
     tanstackDb: true,
+    livestore: true,
   },
 ]
 
-const approaches = ['Pinia', 'Colada', 'rstore', 'Yjs', 'TanStack DB'] as const
-const keys = ['pinia', 'colada', 'rstore', 'yjs', 'tanstackDb'] as const
+const approaches = ['Pinia', 'Colada', 'rstore', 'Yjs', 'TanStack DB', 'LiveStore'] as const
+const keys = ['pinia', 'colada', 'rstore', 'yjs', 'tanstackDb', 'livestore'] as const
 </script>
 
 <template>
@@ -93,7 +102,7 @@ const keys = ['pinia', 'colada', 'rstore', 'yjs', 'tanstackDb'] as const
               class="matrix-td text-center"
             >
               <span v-if="f[k]" class="text-xs text-green-400 font-mono">
-                yes<span v-if="k === 'yjs' && f.yjsNote" class="text-text-base/30 ml-0.5">({{ f.yjsNote }})</span>
+                yes<span v-if="k === 'yjs' && f.yjsNote" class="text-text-base/30 ml-0.5">({{ f.yjsNote }})</span><span v-if="k === 'livestore' && f.livestoreNote" class="text-text-base/30 ml-0.5">({{ f.livestoreNote }})</span>
               </span>
               <span v-else class="text-xs text-text-base/20 font-mono">&mdash;</span>
             </td>

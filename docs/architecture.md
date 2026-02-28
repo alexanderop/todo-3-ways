@@ -2,16 +2,16 @@
 
 ## Layer-Based Structure
 
-The app uses Nuxt layers to implement the same todo app five different ways,
+The app uses Nuxt layers to implement the same todo app six different ways,
 all sharing one backend. Each layer extends `../shared` in its own `nuxt.config.ts`.
 
-The root `nuxt.config.ts` extends all five layers:
+The root `nuxt.config.ts` extends all six layers:
 
 ```ts
-extends: ['./layers/pinia', './layers/colada', './layers/rstore', './layers/yjs', './layers/tanstack-db']
+extends: ['./layers/pinia', './layers/colada', './layers/rstore', './layers/yjs', './layers/tanstack-db', './layers/livestore']
 ```
 
-Each layer registers a route at its name (`/pinia`, `/colada`, `/rstore`, `/yjs`, `/tanstack-db`).
+Each layer registers a route at its name (`/pinia`, `/colada`, `/rstore`, `/yjs`, `/tanstack-db`, `/livestore`).
 
 ## Shared Layer (`layers/shared/`)
 
@@ -116,6 +116,23 @@ const { data: todos } = useLiveQuery((q) =>
 ```
 
 Data flows through the shared `/api/todos/` REST endpoints. No new server routes.
+
+## Approach 6: LiveStore (`layers/livestore/`)
+
+**Pattern:** Event-sourced local-first reactive database with SQLite WASM, OPFS persistence, and Web Worker execution.
+
+- **Schema:** `livestore/schema.ts` — defines events (source of truth), SQLite tables (derived state), and materializers (event → SQL mutations)
+- **Worker:** `livestore/livestore.worker.ts` — Web Worker entry point running WASM SQLite
+- **Client Plugin:** `plugins/livestore.client.ts` — creates the `makePersistedAdapter` singleton with OPFS storage, dedicated Worker, and SharedWorker for multi-tab sync. Uses `globalThis.__livestoreAdapter` for HMR safety.
+- **Composable:** `composables/useLivestoreTodos.ts` — uses `queryDb` for reactive queries and `store.commit(events.*)` for mutations. Maps `boolean` completed → `0|1` integer for shared component compatibility.
+- **Page:** `pages/livestore.vue` — wraps content with `LiveStoreProvider` from `vue-livestore`, which manages store initialization and provides Vue context injection
+- **Inner Component:** `components/LivestoreTodoContent.vue` — renders inside the provider (required because `useStore()` must be called within `LiveStoreProvider` context)
+
+```
+User Action → store.commit(event) → Event Log (OPFS) → Materializer → Client SQLite → queryDb → Reactive Ref → UI
+```
+
+LiveStore does not use the shared REST API. All data is local-first with OPFS persistence. Multi-tab sync via SharedWorker. IDs are string UUIDs (`crypto.randomUUID()`).
 
 ## Conventions
 

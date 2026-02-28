@@ -5,6 +5,7 @@ export default defineNuxtConfig({
     './layers/rstore',
     './layers/yjs',
     './layers/tanstack-db',
+    './layers/livestore',
   ],
 
   modules: [
@@ -27,7 +28,7 @@ export default defineNuxtConfig({
         { rel: 'icon', href: '/favicon.ico', sizes: 'any' },
       ],
       meta: [
-        { name: 'description', content: 'Todo app built 5 ways with Pinia, Pinia Colada, rstore, Yjs, and TanStack DB' },
+        { name: 'description', content: 'Todo app built 6 ways with Pinia, Pinia Colada, rstore, Yjs, TanStack DB, and LiveStore' },
       ],
     },
   },

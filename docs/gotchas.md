@@ -51,6 +51,26 @@ Colors are managed via CSS custom properties in `app/app.vue` (e.g., `--color-fi
 
 The shared layer's `nuxt.config.ts` only sets `$meta.name: 'shared'`. It does not register any Nuxt modules — it relies on Nitro auto-imports for `useDrizzle` and `todos` to be available in server handlers.
 
+## LiveStore is Client-Only
+
+Like Yjs and TanStack DB, LiveStore runs entirely in the browser. The plugin uses `.client.ts` suffix. The composable has an SSR guard returning inert computed refs when `import.meta.server` is true.
+
+## LiveStore OPFS Requires Secure Context
+
+LiveStore's OPFS persistence requires HTTPS in production. Works on `localhost` during development.
+
+## LiveStore Data is Isolated
+
+LiveStore does not use the shared REST API. Todos created in LiveStore are not visible in other approaches (and vice versa). This is the same as Yjs.
+
+## LiveStore `completed` is Boolean Internally
+
+LiveStore's SQLite stores `completed` as boolean (`true`/`false`). The composable maps to `0|1` for shared component compatibility.
+
+## LiveStore `useStore()` Requires Provider Context
+
+The `useStore()` composable from `vue-livestore` must be called inside the `LiveStoreProvider` component's default slot. This is why the page uses a nested `LivestoreTodoContent` component.
+
 ## pnpm Catalogs
 
 All dependency versions are managed via `pnpm-workspace.yaml` catalogs, not individual `package.json` version fields. When adding a dependency, add its version to the catalog first.

@@ -4,9 +4,13 @@ trustPolicy: no-downgrade
 
 packages: []
 catalog:
+  '@effect/cluster': ~0.34.5
+  '@effect/rpc': ~0.59.9
+  '@effect/sql': ~0.35.8
   husky: ^9.1.7
 catalogs:
   build:
+    '@livestore/devtools-vite': ^0.3.1
     '@nuxt/devtools': ^3.1.1
     '@nuxt/eslint': ^1.14.0
     '@nuxt/kit': ^4.3.1
@@ -31,6 +35,11 @@ catalogs:
     typescript: ^5.9.3
     vue-tsc: ^3.2.4
   frontend:
+    '@livestore/adapter-web': ^0.3.1
+    '@livestore/livestore': ^0.3.1
+    '@livestore/peer-deps': ^0.3.1
+    '@livestore/utils': ^0.3.1
+    '@livestore/wa-sqlite': ^1.0.5-dev.2
     '@pinia/colada': ^0.21.6
     '@tanstack/query-db-collection': ^1.0.27
     '@tanstack/vue-db': ^0.0.107
@@ -39,6 +48,7 @@ catalogs:
     drizzle-orm: ^0.45.1
     pinia: ^3.0.4
     vue: ^3.5.27
+    vue-livestore: ^0.2.3
     y-crossws: ^0.0.2
     y-indexeddb: ^9.0.12
     y-websocket: ^2.1.0
