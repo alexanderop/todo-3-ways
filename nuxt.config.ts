@@ -1,9 +1,12 @@
 export default defineNuxtConfig({
+  extends: [
+    './layers/pinia',
+    './layers/colada',
+    './layers/rstore',
+  ],
+
   modules: [
     '@unocss/nuxt',
-    '@pinia/nuxt',
-    '@pinia/colada-nuxt',
-    '@rstore/nuxt-drizzle',
     '@nuxt/eslint',
   ],
 
@@ -54,10 +57,5 @@ export default defineNuxtConfig({
         sortConfigKeys: true,
       },
     },
-  },
-
-  rstoreDrizzle: {
-    // rstore will auto-generate its own API at /api/rstore
-    // and create typed collections from our Drizzle schema
   },
 })
