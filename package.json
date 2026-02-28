@@ -6,7 +6,7 @@
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
-    "prepare": "nuxt prepare",
+    "prepare": "husky && nuxt prepare",
     "preview": "nuxt preview",
     "start": "node .output/server/index.mjs",
     "lint": "oxlint && eslint .",
@@ -18,7 +18,10 @@
   "dependencies": {
     "@pinia/colada": "catalog:frontend",
     "better-sqlite3": "catalog:frontend",
-    "drizzle-orm": "catalog:frontend"
+    "drizzle-orm": "catalog:frontend",
+    "y-indexeddb": "catalog:frontend",
+    "y-websocket": "catalog:frontend",
+    "yjs": "catalog:frontend"
   },
   "devDependencies": {
     "@antfu/eslint-config": "catalog:dev",
@@ -36,6 +39,7 @@
     "eslint": "catalog:dev",
     "eslint-plugin-format": "catalog:dev",
     "eslint-plugin-oxlint": "catalog:dev",
+    "husky": "catalog:",
     "nuxt": "catalog:build",
     "oxlint": "catalog:dev",
     "pinia": "catalog:frontend",

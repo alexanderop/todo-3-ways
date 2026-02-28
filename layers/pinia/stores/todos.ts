@@ -1,3 +1,6 @@
+import { defineStore } from 'pinia'
+import { ref } from 'vue'
+
 export const useTodoStore = defineStore('todos', () => {
   const todos = ref<Array<{ id: number, title: string, completed: number, createdAt: string }>>([])
   const loading = ref(false)

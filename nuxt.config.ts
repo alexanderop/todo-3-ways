@@ -3,12 +3,17 @@ export default defineNuxtConfig({
     './layers/pinia',
     './layers/colada',
     './layers/rstore',
+    './layers/yjs',
   ],
 
   modules: [
     '@unocss/nuxt',
     '@nuxt/eslint',
   ],
+
+  imports: {
+    autoImport: false,
+  },
 
   devtools: {
     enabled: true,
@@ -21,7 +26,7 @@ export default defineNuxtConfig({
         { rel: 'icon', href: '/favicon.ico', sizes: 'any' },
       ],
       meta: [
-        { name: 'description', content: 'Todo app built 3 ways with Pinia, Pinia Colada, and rstore' },
+        { name: 'description', content: 'Todo app built 4 ways with Pinia, Pinia Colada, rstore, and Yjs' },
       ],
     },
   },

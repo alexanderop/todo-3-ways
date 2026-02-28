@@ -3,19 +3,18 @@ shellEmulator: true
 trustPolicy: no-downgrade
 
 packages: []
+catalog:
+  husky: ^9.1.7
 catalogs:
   build:
     '@nuxt/devtools': ^3.1.1
     '@nuxt/eslint': ^1.14.0
     '@nuxt/kit': ^4.3.1
-    '@nuxtjs/color-mode': ^4.0.0
     '@pinia/colada-nuxt': ^0.3.2
     '@pinia/nuxt': ^0.11.3
     '@rstore/nuxt-drizzle': ^0.8.3
     '@unocss/eslint-config': ^66.6.0
     '@unocss/nuxt': ^66.6.0
-    '@vite-pwa/nuxt': ^1.1.1
-    '@vueuse/nuxt': ^14.2.0
     nuxt: ^4.3.1
     unocss: ^66.6.0
     unplugin: ^3.0.0
@@ -33,14 +32,15 @@ catalogs:
     vue-tsc: ^3.2.4
   frontend:
     '@pinia/colada': ^0.21.6
-    '@vueuse/core': ^14.2.0
     better-sqlite3: ^12.6.2
     drizzle-orm: ^0.45.1
     pinia: ^3.0.4
     vue: ^3.5.27
+    y-indexeddb: ^9.0.12
+    y-websocket: ^2.1.0
+    yjs: ^13.6.24
   icons:
     '@iconify-json/carbon': ^1.2.18
-    '@iconify-json/twemoji': ^1.2.5
 onlyBuiltDependencies:
   - '@parcel/watcher'
   - better-sqlite3

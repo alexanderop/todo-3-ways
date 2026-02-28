@@ -1,5 +1,4 @@
 <script setup lang="ts">
-const newTodo = ref('')
 const queryCache = useQueryCache()
 
 const { data: todos, isPending, error } = useQuery({
@@ -33,50 +32,17 @@ const { mutate: deleteTodo } = useMutation({
     queryCache.invalidateQueries({ key: ['todos'] })
   },
 })
-
-async function handleAdd() {
-  if (!newTodo.value.trim())
-    return
-  addTodo(newTodo.value)
-  newTodo.value = ''
-}
 </script>
 
 <template>
-  <div class="todo-app">
-    <h1>Pinia Colada Todos</h1>
-    <p class="subtitle">
-      Keyed queries with automatic caching
-    </p>
-
-    <div class="todo-card">
-      <form class="add-form" @submit.prevent="handleAdd">
-        <input v-model="newTodo" placeholder="What needs to be done?">
-        <button type="submit">
-          Add
-        </button>
-      </form>
-
-      <p v-if="isPending" class="status">
-        Loading...
-      </p>
-      <p v-else-if="error" class="status error">
-        Error: {{ error.message }}
-      </p>
-
-      <ul v-else class="todo-list">
-        <li v-for="todo in todos" :key="todo.id" class="todo-item">
-          <input
-            type="checkbox"
-            :checked="!!todo.completed"
-            @change="toggleTodo({ id: todo.id, completed: todo.completed })"
-          >
-          <span :class="{ done: todo.completed }">{{ todo.title }}</span>
-          <button class="delete" @click="deleteTodo(todo.id)">
-            ✕
-          </button>
-        </li>
-      </ul>
-    </div>
-  </div>
+  <TodoPage
+    title="Pinia Colada Todos"
+    subtitle="Keyed queries with automatic caching"
+    :todos="todos ?? []"
+    :loading="isPending"
+    :error="error?.message"
+    @add="addTodo"
+    @toggle="(id) => toggleTodo({ id: id as number, completed: todos?.find(t => t.id === id)?.completed ?? 0 })"
+    @delete="(id) => deleteTodo(id as number)"
+  />
 </template>

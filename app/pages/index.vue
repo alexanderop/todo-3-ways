@@ -1,145 +1,43 @@
+<script setup lang="ts">
+const approaches = [
+  { num: '01', title: 'Pinia', description: 'Manual state management', path: '/pinia' },
+  { num: '02', title: 'Pinia Colada', description: 'Keyed queries with automatic caching', path: '/colada' },
+  { num: '03', title: 'rstore', description: 'Local-first with Drizzle auto-generated API', path: '/rstore' },
+  { num: '04', title: 'Yjs', description: 'Local-first CRDT with offline sync', path: '/yjs' },
+]
+</script>
+
 <template>
-  <div class="landing">
-    <div class="landing-header">
-      <h1>Todo, Three Ways</h1>
-      <p>The same todo app built with three different state management approaches in Nuxt.</p>
+  <div class="mx-auto px-6 pb-16 pt-16 max-w-[640px]">
+    <div class="mb-12 after:(mt-6 rounded-sm bg-accent h-[3px] w-12 block content-empty)">
+      <h1 class="text-[2.5rem] text-text-base leading-[1.15] tracking-[-0.02em] font-normal font-serif m-0">
+        Todo, Four Ways
+      </h1>
+      <p class="text-[1.0625rem] text-text-base/45 leading-relaxed mb-0 mt-3">
+        The same todo app built with four different state management approaches in Nuxt.
+      </p>
     </div>
 
-    <div class="approach-grid">
-      <NuxtLink to="/pinia" class="approach-card">
-        <span class="approach-num">01</span>
-        <h2>Pinia</h2>
-        <p>Manual state management</p>
-        <span class="approach-go">&rarr;</span>
-      </NuxtLink>
-
-      <NuxtLink to="/colada" class="approach-card">
-        <span class="approach-num">02</span>
-        <h2>Pinia Colada</h2>
-        <p>Keyed queries with automatic caching</p>
-        <span class="approach-go">&rarr;</span>
-      </NuxtLink>
-
-      <NuxtLink to="/rstore" class="approach-card">
-        <span class="approach-num">03</span>
-        <h2>rstore</h2>
-        <p>Local-first with Drizzle auto-generated API</p>
-        <span class="approach-go">&rarr;</span>
+    <div class="mt-12 gap-4 grid">
+      <NuxtLink
+        v-for="approach in approaches"
+        :key="approach.path"
+        :to="approach.path"
+        class="group text-inherit p-6 pr-7 border border-border/25 rounded-[14px] bg-card no-underline flex flex-col transition-all duration-250 ease relative overflow-hidden hover:(border-accent/50 shadow-[0_8px_24px_-8px_rgba(255,107,237,0.15)] -translate-y-0.5 after:scale-y-100) after:(bg-accent h-full w-[3px] content-empty origin-top scale-y-0 transition-transform duration-300 ease left-0 top-0 absolute)"
+      >
+        <span class="text-[0.6875rem] text-accent tracking-[0.12em] font-mono uppercase">
+          {{ approach.num }}
+        </span>
+        <h2 class="text-[1.375rem] text-text-base font-normal font-serif mb-0 mt-2">
+          {{ approach.title }}
+        </h2>
+        <p class="text-[0.875rem] text-text-base/40 leading-normal mb-0 mt-1.5">
+          {{ approach.description }}
+        </p>
+        <span class="text-[1.25rem] text-accent mt-5 opacity-0 transition-all duration-250 ease group-hover:(opacity-100 translate-x-0) -translate-x-1.5">
+          &rarr;
+        </span>
       </NuxtLink>
     </div>
   </div>
 </template>
-
-<style scoped>
-.landing {
-  max-width: 640px;
-  margin: 0 auto;
-  padding: 4rem 1.5rem;
-}
-
-.landing-header h1 {
-  font-family: 'DM Serif Display', serif;
-  font-size: 2.5rem;
-  font-weight: 400;
-  color: rgb(var(--color-text-base));
-  margin: 0;
-  letter-spacing: -0.02em;
-  line-height: 1.15;
-}
-
-.landing-header p {
-  font-size: 1.0625rem;
-  color: rgba(var(--color-text-base), 0.45);
-  margin: 0.75rem 0 0;
-  line-height: 1.6;
-}
-
-.landing-header::after {
-  content: '';
-  display: block;
-  width: 48px;
-  height: 3px;
-  background: rgb(var(--color-accent));
-  border-radius: 2px;
-  margin-top: 1.5rem;
-}
-
-.approach-grid {
-  display: grid;
-  gap: 1rem;
-  margin-top: 3rem;
-}
-
-.approach-card {
-  display: flex;
-  flex-direction: column;
-  padding: 1.5rem 1.75rem;
-  background: rgb(var(--color-card));
-  border: 1px solid rgba(var(--color-border), 0.25);
-  border-radius: 14px;
-  text-decoration: none;
-  color: inherit;
-  transition: all 0.25s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.approach-card::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 3px;
-  height: 100%;
-  background: rgb(var(--color-accent));
-  transform: scaleY(0);
-  transform-origin: top;
-  transition: transform 0.3s ease;
-}
-
-.approach-card:hover {
-  border-color: rgba(var(--color-accent), 0.5);
-  box-shadow: 0 8px 24px -8px rgba(var(--color-accent), 0.15);
-  transform: translateY(-2px);
-}
-
-.approach-card:hover::after {
-  transform: scaleY(1);
-}
-
-.approach-num {
-  font-family: 'DM Mono', monospace;
-  font-size: 0.6875rem;
-  color: rgb(var(--color-accent));
-  letter-spacing: 0.12em;
-}
-
-.approach-card h2 {
-  font-family: 'DM Serif Display', serif;
-  font-size: 1.375rem;
-  font-weight: 400;
-  margin: 0.5rem 0 0;
-  color: rgb(var(--color-text-base));
-}
-
-.approach-card > p {
-  font-size: 0.875rem;
-  color: rgba(var(--color-text-base), 0.4);
-  margin: 0.375rem 0 0;
-  line-height: 1.5;
-}
-
-.approach-go {
-  margin-top: 1.25rem;
-  font-size: 1.25rem;
-  color: rgb(var(--color-accent));
-  opacity: 0;
-  transform: translateX(-6px);
-  transition: all 0.25s ease;
-}
-
-.approach-card:hover .approach-go {
-  opacity: 1;
-  transform: translateX(0);
-}
-</style>

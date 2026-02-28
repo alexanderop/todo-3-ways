@@ -5,6 +5,7 @@ import nuxt from './.nuxt/eslint.config.mjs'
 
 export default antfu(
   {
+    ignores: ['.agents/**', '.claude/**', '**/*.md'],
     unocss: true,
     formatters: true,
     pnpm: true,
