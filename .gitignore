@@ -6,4 +6,5 @@ dist
 .nuxt
 .env
 .idea/
+db.sqlite
 public/assets/fonts

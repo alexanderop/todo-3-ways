@@ -1,0 +1,13 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn"
+  },
+  "plugins": ["typescript"],
+  "rules": {
+    "typescript/no-explicit-any": "error",
+    "no-console": ["error", { "allow": ["warn", "error"] }],
+    "no-nested-ternary": "error"
+  }
+}
