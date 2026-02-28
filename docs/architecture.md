@@ -2,16 +2,16 @@
 
 ## Layer-Based Structure
 
-The app uses Nuxt layers to implement the same todo app four different ways,
+The app uses Nuxt layers to implement the same todo app five different ways,
 all sharing one backend. Each layer extends `../shared` in its own `nuxt.config.ts`.
 
-The root `nuxt.config.ts` extends all four layers:
+The root `nuxt.config.ts` extends all five layers:
 
 ```ts
-extends: ['./layers/pinia', './layers/colada', './layers/rstore', './layers/yjs']
+extends: ['./layers/pinia', './layers/colada', './layers/rstore', './layers/yjs', './layers/tanstack-db']
 ```
 
-Each layer registers a route at its name (`/pinia`, `/colada`, `/rstore`, `/yjs`).
+Each layer registers a route at its name (`/pinia`, `/colada`, `/rstore`, `/yjs`, `/tanstack-db`).
 
 ## Shared Layer (`layers/shared/`)
 
@@ -92,6 +92,30 @@ await store.todos.delete(id)
 
 Yjs is the source of truth — IndexedDB provides offline persistence, and WebSocket sync (via `y-crossws`) enables real-time collaboration across tabs/clients.
 IDs are string UUIDs (not auto-increment integers like the other approaches).
+
+## Approach 5: TanStack DB (`layers/tanstack-db/`)
+
+**Pattern:** Client-side reactive database with normalized collections, SQL-like live queries, and optimistic mutations via TanStack Query sync.
+
+- **Client Plugin:** `plugins/query-client.client.ts` — creates a `QueryClient` instance and registers `VueQueryPlugin`. Client-only (`.client.ts` suffix) because TanStack DB collections are browser-only.
+- **Composable:** `composables/useTanstackDbTodos.ts` — defines a `QueryCollection` backed by TanStack Query (`queryCollectionOptions`). Uses `useLiveQuery` for reactive data binding. Mutations (`insert`, `update`, `delete`) are optimistic with automatic rollback on failure. Collection is a singleton guarded by `globalThis` for HMR safety.
+- **Page:** `pages/tanstack-db.vue` — uses `<TodoPage>` + `<DemoToolbar>`
+
+```ts
+const todoCollection = createCollection(queryCollectionOptions({
+  queryKey: ['todos'],
+  queryFn: () => $fetch('/api/todos'),
+  queryClient,
+  getKey: (item) => item.id,
+  onInsert/onUpdate/onDelete: async ({ transaction }) => { /* $fetch to API */ },
+}))
+
+const { data: todos } = useLiveQuery((q) =>
+  q.from({ todos: todoCollection }).select(...)
+)
+```
+
+Data flows through the shared `/api/todos/` REST endpoints. No new server routes.
 
 ## Conventions
 

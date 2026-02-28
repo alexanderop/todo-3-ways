@@ -10,7 +10,7 @@ export const useTodoStore = defineStore('todos', () => {
     loading.value = true
     error.value = null
     try {
-      todos.value = await $fetch('/api/todos')
+      todos.value = await $fetch<typeof todos.value>('/api/todos')
     }
     catch (e: unknown) {
       error.value = e instanceof Error ? e.message : 'Unknown error'

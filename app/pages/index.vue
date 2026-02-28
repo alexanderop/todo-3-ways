@@ -4,6 +4,7 @@ const approaches = [
   { num: '02', title: 'Pinia Colada', description: 'Keyed queries with automatic caching', path: '/colada' },
   { num: '03', title: 'rstore', description: 'Local-first with Drizzle auto-generated API', path: '/rstore' },
   { num: '04', title: 'Yjs', description: 'Local-first CRDT with offline sync', path: '/yjs' },
+  { num: '05', title: 'TanStack DB', description: 'Client-side reactive database with live queries', path: '/tanstack-db' },
 ]
 </script>
 
@@ -11,10 +12,10 @@ const approaches = [
   <div class="mx-auto px-6 pb-16 pt-16 max-w-[640px]">
     <div class="mb-12 after:(mt-6 rounded-sm bg-accent h-[3px] w-12 block content-empty)">
       <h1 class="text-[2.5rem] text-text-base leading-[1.15] tracking-[-0.02em] font-normal font-serif m-0">
-        Todo, Four Ways
+        Todo, Five Ways
       </h1>
       <p class="text-[1.0625rem] text-text-base/45 leading-relaxed mb-0 mt-3">
-        The same todo app built with four different state management approaches in Nuxt.
+        The same todo app built with five different state management approaches in Nuxt.
       </p>
     </div>
 

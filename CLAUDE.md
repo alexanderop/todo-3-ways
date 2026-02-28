@@ -1,7 +1,7 @@
 # CLAUDE.md
 
-Todo 4 Ways — a Nuxt 4 monorepo demonstrating Pinia, Pinia Colada,
-rstore, and Yjs state management via layers with a shared SQLite backend.
+Todo 5 Ways — a Nuxt 4 monorepo demonstrating Pinia, Pinia Colada,
+rstore, Yjs, and TanStack DB state management via layers with a shared SQLite backend.
 
 ## Commands
 
@@ -18,7 +18,7 @@ Run `pnpm lint:fix && pnpm typecheck` after code changes.
 
 - Nuxt 4 with UnoCSS
 - Drizzle ORM + better-sqlite3
-- Pinia, Pinia Colada, @rstore/nuxt-drizzle, Yjs
+- Pinia, Pinia Colada, @rstore/nuxt-drizzle, Yjs, TanStack DB
 - ESLint (@antfu/eslint-config) + Oxlint
 
 ## Structure
@@ -31,7 +31,8 @@ layers/
   colada/             # Approach 2: Pinia Colada queries/mutations
   rstore/             # Approach 3: rstore local-first with Drizzle
   yjs/                # Approach 4: Yjs CRDT offline-first sync
-nuxt.config.ts        # Extends all 4 layers
+  tanstack-db/        # Approach 5: TanStack DB client-side reactive database
+nuxt.config.ts        # Extends all 5 layers
 eslint.config.js      # @antfu/eslint-config + oxlint
 drizzle.config.ts     # Points to shared layer schema
 ```

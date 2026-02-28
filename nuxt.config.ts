@@ -4,6 +4,7 @@ export default defineNuxtConfig({
     './layers/colada',
     './layers/rstore',
     './layers/yjs',
+    './layers/tanstack-db',
   ],
 
   modules: [
@@ -26,7 +27,7 @@ export default defineNuxtConfig({
         { rel: 'icon', href: '/favicon.ico', sizes: 'any' },
       ],
       meta: [
-        { name: 'description', content: 'Todo app built 4 ways with Pinia, Pinia Colada, rstore, and Yjs' },
+        { name: 'description', content: 'Todo app built 5 ways with Pinia, Pinia Colada, rstore, Yjs, and TanStack DB' },
       ],
     },
   },

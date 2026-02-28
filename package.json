@@ -17,6 +17,9 @@
   },
   "dependencies": {
     "@pinia/colada": "catalog:frontend",
+    "@tanstack/query-db-collection": "catalog:frontend",
+    "@tanstack/vue-db": "catalog:frontend",
+    "@tanstack/vue-query": "catalog:frontend",
     "better-sqlite3": "catalog:frontend",
     "drizzle-orm": "catalog:frontend",
     "y-crossws": "catalog:frontend",

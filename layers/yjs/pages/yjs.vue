@@ -3,7 +3,7 @@ import { useNuxtApp, useOfflineSimulation, useTabSync } from '#imports'
 import { watch } from 'vue'
 import { useYjsTodos } from '../composables/useYjsTodos'
 
-const { todos, isOnline, isSynced, addTodo, toggleTodo, deleteTodo } = useYjsTodos()
+const { todos, isOnline, isSynced, addTodo, toggleTodo, deleteTodo, undo, redo, canUndo, canRedo } = useYjsTodos()
 const { isOffline, toggleOffline } = useOfflineSimulation()
 const { tabCount, lastRemoteEvent, broadcastMutation } = useTabSync('yjs')
 
@@ -61,6 +61,26 @@ function handleDelete(id: number | string) {
       />
     </template>
     <template #toolbar>
+      <div class="flex gap-2 items-center">
+        <button
+          :disabled="!canUndo"
+          class="border-base/20 bg-base/5 text-sm px-2 py-1 border rounded-md inline-flex gap-1 transition items-center disabled:opacity-40 disabled:cursor-not-allowed"
+          title="Undo (CRDT-aware)"
+          @click="undo()"
+        >
+          <span class="i-carbon-undo h-4 w-4 inline-block" />
+          Undo
+        </button>
+        <button
+          :disabled="!canRedo"
+          class="border-base/20 bg-base/5 text-sm px-2 py-1 border rounded-md inline-flex gap-1 transition items-center disabled:opacity-40 disabled:cursor-not-allowed"
+          title="Redo (CRDT-aware)"
+          @click="redo()"
+        >
+          <span class="i-carbon-redo h-4 w-4 inline-block" />
+          Redo
+        </button>
+      </div>
       <DemoToolbar
         :capabilities="capabilities"
         :is-offline="isOffline"

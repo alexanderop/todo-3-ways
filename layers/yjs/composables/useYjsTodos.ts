@@ -26,27 +26,54 @@ export function useYjsTodos() {
       todos: computed<Todo[]>(() => []),
       isSynced: ref(false),
       isOnline: ref(false),
+      canUndo: ref(false),
+      canRedo: ref(false),
       addTodo: (_title: string) => {},
       toggleTodo: (_id: string) => {},
       deleteTodo: (_id: string) => {},
+      undo: () => {},
+      redo: () => {},
     }
   }
 
   const { $yDoc: doc, $yWs: ws, $yIdb: idb } = useNuxtApp()
 
-  const todosMap = doc.getMap<Y.Map<unknown>>('todos')
+  const todosArray = doc.getArray<Y.Map<unknown>>('todoList')
   // eslint-disable-next-line ts/consistent-type-assertions
-  const rawTodos = useY(todosMap as Y.AbstractType<unknown>)
+  const rawTodos = useY(todosArray as Y.AbstractType<unknown>)
   const todos = computed<Todo[]>(() => {
-    return Object.entries(rawTodos.value)
-      .map(([id, fields]) => ({
-        id,
-        title: String(fields.title ?? ''),
-        completed: Number(fields.completed ?? 0),
-        createdAt: Number(fields.createdAt ?? 0),
-      }))
-      .sort((a, b) => b.createdAt - a.createdAt)
+    const arr = rawTodos.value
+    if (!Array.isArray(arr))
+      return []
+    return arr.map((item: Record<string, unknown>) => ({
+      id: String(item.id ?? ''),
+      title: String(item.title ?? ''),
+      completed: Number(item.completed ?? 0),
+      createdAt: Number(item.createdAt ?? 0),
+    }))
   })
+
+  // UndoManager — per-user undo/redo that ignores remote changes
+  const undoManager = new Y.UndoManager(todosArray)
+  const canUndo = ref(undoManager.undoStack.length > 0)
+  const canRedo = ref(undoManager.redoStack.length > 0)
+
+  function updateUndoState() {
+    canUndo.value = undoManager.undoStack.length > 0
+    canRedo.value = undoManager.redoStack.length > 0
+  }
+
+  undoManager.on('stack-item-added', updateUndoState)
+  undoManager.on('stack-item-popped', updateUndoState)
+  undoManager.on('stack-cleared', updateUndoState)
+
+  function undo() {
+    undoManager.undo()
+  }
+
+  function redo() {
+    undoManager.redo()
+  }
 
   const isSynced = ref(false)
   const isOnline = ref(false)
@@ -55,23 +82,37 @@ export function useYjsTodos() {
     const id = crypto.randomUUID()
     const yMap = new Y.Map<unknown>()
     doc.transact(() => {
+      yMap.set('id', id)
       yMap.set('title', title)
       yMap.set('completed', 0)
       yMap.set('createdAt', Date.now())
-      todosMap.set(id, yMap)
+      todosArray.insert(0, [yMap])
     })
   }
 
   function toggleTodo(id: string) {
-    const yMap = todosMap.get(id)
-    if (!yMap)
-      return
-    const current = Number(yMap.get('completed') ?? 0)
-    yMap.set('completed', current ? 0 : 1)
+    doc.transact(() => {
+      for (let i = 0; i < todosArray.length; i++) {
+        const yMap = todosArray.get(i)
+        if (yMap.get('id') === id) {
+          const current = Number(yMap.get('completed') ?? 0)
+          yMap.set('completed', current ? 0 : 1)
+          break
+        }
+      }
+    })
   }
 
   function deleteTodo(id: string) {
-    todosMap.delete(id)
+    doc.transact(() => {
+      for (let i = 0; i < todosArray.length; i++) {
+        const yMap = todosArray.get(i)
+        if (yMap.get('id') === id) {
+          todosArray.delete(i, 1)
+          break
+        }
+      }
+    })
   }
 
   const onSync = () => {
@@ -85,6 +126,10 @@ export function useYjsTodos() {
   ws.on('status', onStatus)
 
   onScopeDispose(() => {
+    undoManager.off('stack-item-added', updateUndoState)
+    undoManager.off('stack-item-popped', updateUndoState)
+    undoManager.off('stack-cleared', updateUndoState)
+    undoManager.destroy()
     idb.off('synced', onSync)
     ws.off('status', onStatus)
   })
@@ -93,8 +138,12 @@ export function useYjsTodos() {
     todos,
     isSynced,
     isOnline,
+    canUndo,
+    canRedo,
     addTodo,
     toggleTodo,
     deleteTodo,
+    undo,
+    redo,
   }
 }

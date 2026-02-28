@@ -6,6 +6,7 @@ const features = [
     colada: false,
     rstore: true,
     yjs: true,
+    tanstackDb: false,
   },
   {
     label: 'Multi-tab sync',
@@ -13,6 +14,7 @@ const features = [
     colada: false,
     rstore: false,
     yjs: true,
+    tanstackDb: false,
   },
   {
     label: 'Conflict resolution',
@@ -21,6 +23,7 @@ const features = [
     rstore: false,
     yjs: true,
     yjsNote: 'CRDT',
+    tanstackDb: false,
   },
   {
     label: 'Real-time updates',
@@ -28,6 +31,7 @@ const features = [
     colada: false,
     rstore: false,
     yjs: true,
+    tanstackDb: false,
   },
   {
     label: 'Auto-generated API',
@@ -35,6 +39,7 @@ const features = [
     colada: false,
     rstore: true,
     yjs: false,
+    tanstackDb: false,
   },
   {
     label: 'Caching',
@@ -43,6 +48,7 @@ const features = [
     rstore: true,
     yjs: true,
     yjsNote: 'local',
+    tanstackDb: true,
   },
   {
     label: 'Optimistic updates',
@@ -50,11 +56,12 @@ const features = [
     colada: false,
     rstore: true,
     yjs: true,
+    tanstackDb: true,
   },
 ]
 
-const approaches = ['Pinia', 'Colada', 'rstore', 'Yjs'] as const
-const keys = ['pinia', 'colada', 'rstore', 'yjs'] as const
+const approaches = ['Pinia', 'Colada', 'rstore', 'Yjs', 'TanStack DB'] as const
+const keys = ['pinia', 'colada', 'rstore', 'yjs', 'tanstackDb'] as const
 </script>
 
 <template>
